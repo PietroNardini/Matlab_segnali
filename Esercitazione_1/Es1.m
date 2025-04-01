@@ -1,9 +1,12 @@
 %grafico funzione sinc(t/T)
 T=1;
-t=linspace(-5,5,101);
+t=linspace(-5,5,1000);
 x=sinc(t./T);
 figure;
 plot(t,x);
+xlabel('Tempo (t)');
+ylabel('sinc(t/T)');
+title('grafico di sinc(t/T)');
 
 %grafico funzione sinc(t/T) senza funzione
 
@@ -12,6 +15,10 @@ t=linspace(-5,5,101);
 x=(sin(pi * t / T) ./ (pi * t / T));
 figure;
 plot(t,x);
+xlabel('Tempo (t)');
+ylabel('sinc(t/T)');
+title('grafico di sinc(t/T) calcolata senza funzione ');
+
 
 
 %grafico funzione sinc^2(t/T)
@@ -21,6 +28,9 @@ t=linspace(-5,5,101);
 x=sinc(t./T).^2;
 figure;
 plot(t,x);
+xlabel('Tempo (t)');
+ylabel('sinc(t/T)');
+title('grafico di sinc^2(t/T)');
 
 %grafico di modulo e argomento
 T=1

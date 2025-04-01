@@ -1,49 +1,30 @@
-%1)
-syms t T;
 
-% Funzione sinc(t/T)
-f = sinc(t/T);
+%% Parametri
+T1 = 1;  % Parametro per sinc
+T0 = 2;  % Periodo per coseno
+syms t k T
 
-% Calcolo dell'energia simbolicamente (integrale della funzione sinc al quadrato)
-E_sinc = int(f^2, -Inf, Inf);
+%% Calcolo dell'energia
+sinc_fun = sinc(t/T1);
+energia_sinc = integral(@(t) sinc(t/T1).^2, -Inf, Inf);
+energia_sinc2 = integral(@(t) sinc(t/T1).^4, -Inf, Inf);
 
-% Sostituisci un valore per T (ad esempio T = 1)
-E_sinc_numeric = double(subs(E_sinc, T, 1));
+fprintf('Energia sinc(t/T1): %f\n', energia_sinc);
+fprintf('Energia sinc^2(t/T1): %f\n', energia_sinc2);
 
-fprintf('Energia di sinc(t/T) tramite integrazione simbolica per T=1: %.4f\n', E_sinc_numeric);
-%2)
+%% Calcolo della potenza media
+cos_fun = cos(2*pi*t/T0);
+potenza_cos = integral(@(t) cos(2*pi*t/T0).^2, -T0/2, T0/2) / T0;
+potenza_cos2 = integral(@(t) cos(2*pi*t/T0).^4, -T0/2, T0/2) / T0;
 
-% Funzione sinc^2(t/T)
-f = sinc(t/T).^2;
+fprintf('Potenza media cos(2*pi*t/T0): %f\n', potenza_cos);
+fprintf('Potenza media cos^2(2*pi*t/T0): %f\n', potenza_cos2);
 
-% Calcolo dell'energia simbolicamente (integrale della funzione sinc al quadrato)
-E_sinc = int(f^2, -Inf, Inf);
+%% Calcolo di un coefficiente della serie di Fourier
+x_t = cos(pi*t/(2*T))^2 * rectangularPulse(-T, T, t);
+T2=T*2; %periodo
+Xk = int(x_t * exp(-1j*2*pi*k*t/T2), t, -T, T) / T0;
+Xk = simplify(Xk);
 
-% Sostituisci un valore per T (ad esempio T = 1)
-E_sinc_numeric = double(subs(E_sinc, T, 1));
-
-fprintf('Energia di sinc(t/T)^2 tramite integrazione simbolica per T=1: %.4f\n', E_sinc_numeric);
-
-%3)
-
-T0 = 1;  % Periodo
-t = linspace(0, T0, 1000);  % Vettore di tempo su un periodo
-f = cos(2*pi*t/T0);  % Funzione coseno
-
-% Calcolo della potenza media
-P_media = mean(f.^2);  % Media del quadrato della funzione
-
-% Stampa del risultato
-disp(['La potenza media è: ', num2str(P_media)]);
-
-%4)
-
-T0 = 1;  % Periodo
-t = linspace(0, T0, 1000);  % Vettore di tempo su un periodo
-f = cos(2*pi*t/T0).^2;  % Funzione coseno
-
-% Calcolo della potenza media
-P_media = mean(f.^2);  % Media del quadrato della funzione
-
-% Stampa del risultato
-disp(['La potenza media è: ', num2str(P_media)]);
+fprintf('Coefficiente Xk della serie di Fourier:\n');
+disp(Xk);
